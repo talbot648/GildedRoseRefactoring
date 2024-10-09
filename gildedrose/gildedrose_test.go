@@ -7,7 +7,7 @@ import (
 )
 
 func TestQualityDecreasesByOneAfterEachDay(t *testing.T) {
-	item := assertTestItem("test", 7, 5)
+	item := givenTestItem("test", 7, 5)
 
 	gildedrose.UpdateItems(item)
 	got := item[0].Quality
@@ -19,7 +19,7 @@ func TestQualityDecreasesByOneAfterEachDay(t *testing.T) {
 }
 
 func TestQualityDegradeSpeedDoublesAfterPassedSellIn(t *testing.T) {
-	item := assertTestItem("test", 0, 10)
+	item := givenTestItem("test", 0, 10)
 
 	gildedrose.UpdateItems(item)
 	got := item[0].Quality
@@ -31,7 +31,7 @@ func TestQualityDegradeSpeedDoublesAfterPassedSellIn(t *testing.T) {
 }
 
 func TestQualityCannotGoBelowZero(t *testing.T) {
-	item := assertTestItem("test", 2, 0)
+	item := givenTestItem("test", 2, 0)
 
 	gildedrose.UpdateItems(item)
 	got := item[0].Quality
@@ -43,7 +43,7 @@ func TestQualityCannotGoBelowZero(t *testing.T) {
 }
 
 func TestAgedBrieQualityIncreasesAfterUpdate(t *testing.T) {
-	item := assertTestItem("Aged Brie", 2, 5)
+	item := givenTestItem("Aged Brie", 2, 5)
 
 	gildedrose.UpdateItems(item)
 	got := item[0].Quality
@@ -55,7 +55,7 @@ func TestAgedBrieQualityIncreasesAfterUpdate(t *testing.T) {
 }
 
 func TestQualityCannotGoAboveFifty(t *testing.T) {
-	item := assertTestItem("Aged Brie", 2, 50)
+	item := givenTestItem("Aged Brie", 2, 50)
 
 	gildedrose.UpdateItems(item)
 	got := item[0].Quality
@@ -67,7 +67,7 @@ func TestQualityCannotGoAboveFifty(t *testing.T) {
 }
 
 func TestSellInDecreasesByOneAfterEachDay(t *testing.T) {
-	item := assertTestItem("test", 5, 7)
+	item := givenTestItem("test", 5, 7)
 
 	gildedrose.UpdateItems(item)
 	got := item[0].SellIn
@@ -79,7 +79,7 @@ func TestSellInDecreasesByOneAfterEachDay(t *testing.T) {
 }
 
 func TestSulfurasDoesNotReduceInQuality(t *testing.T) {
-	item := assertTestItem("Sulfuras, Hand of Ragnaros", 3, 80)
+	item := givenTestItem("Sulfuras, Hand of Ragnaros", 3, 80)
 
 	gildedrose.UpdateItems(item)
 	got := item[0].Quality
@@ -91,7 +91,7 @@ func TestSulfurasDoesNotReduceInQuality(t *testing.T) {
 }
 
 func TestSulfurasSellInDoesNotAffectQuality(t *testing.T) {
-	item := assertTestItem("Sulfuras, Hand of Ragnaros", -2, 80)
+	item := givenTestItem("Sulfuras, Hand of Ragnaros", -2, 80)
 
 	gildedrose.UpdateItems(item)
 	got := item[0].Quality
@@ -103,7 +103,7 @@ func TestSulfurasSellInDoesNotAffectQuality(t *testing.T) {
 }
 
 func TestBackstagePassQualityIncreaseByOneWhenSellInOverTenDays(t *testing.T) {
-	item := assertTestItem("Backstage passes to a TAFKAL80ETC concert", 13, 5)
+	item := givenTestItem("Backstage passes to a TAFKAL80ETC concert", 13, 5)
 
 	gildedrose.UpdateItems(item)
 	got := item[0].Quality
@@ -115,7 +115,7 @@ func TestBackstagePassQualityIncreaseByOneWhenSellInOverTenDays(t *testing.T) {
 }
 
 func TestBackstagePassQualityIncreaseByTwoWhenSellInBetweenFiveAndTenDays(t *testing.T) {
-	item := assertTestItem("Backstage passes to a TAFKAL80ETC concert", 7, 5)
+	item := givenTestItem("Backstage passes to a TAFKAL80ETC concert", 7, 5)
 
 	gildedrose.UpdateItems(item)
 	got := item[0].Quality
@@ -127,7 +127,7 @@ func TestBackstagePassQualityIncreaseByTwoWhenSellInBetweenFiveAndTenDays(t *tes
 }
 
 func TestBackstagePassQualityIncreaseByThreeWhenSellInLessThanFiveDays(t *testing.T) {
-	item := assertTestItem("Backstage passes to a TAFKAL80ETC concert", 3, 5)
+	item := givenTestItem("Backstage passes to a TAFKAL80ETC concert", 3, 5)
 
 	gildedrose.UpdateItems(item)
 	got := item[0].Quality
@@ -139,7 +139,7 @@ func TestBackstagePassQualityIncreaseByThreeWhenSellInLessThanFiveDays(t *testin
 }
 
 func TestBackstagePassQualityZeroAfterConcert(t *testing.T) {
-	item := assertTestItem("Backstage passes to a TAFKAL80ETC concert", 0, 5)
+	item := givenTestItem("Backstage passes to a TAFKAL80ETC concert", 0, 5)
 
 	gildedrose.UpdateItems(item)
 	got := item[0].Quality
@@ -150,7 +150,7 @@ func TestBackstagePassQualityZeroAfterConcert(t *testing.T) {
 	}
 }
 
-func assertTestItem(name string, SellIn int, Quality int) []*gildedrose.Item {
+func givenTestItem(name string, SellIn int, Quality int) []*gildedrose.Item {
 	var items = []*gildedrose.Item{
 		{name, SellIn, Quality},
 	}
