@@ -171,7 +171,7 @@ func TestConjuredItemDegradesTwiceAsFast(t *testing.T) {
 	want := 3
 
 	if got != want {
-		t.Errorf("Error when updating quaity of aged brie with below zero sellin, got %v, expected %v", got, want)
+		t.Errorf("Error when updating conjured item, got %v, expected %v", got, want)
 	}
 }
 
