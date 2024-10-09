@@ -15,33 +15,27 @@ func UpdateItems(items []*Item) {
 
 func (item *Item) UpdateQuality() {
 	if item.Name != "Aged Brie" && item.Name != "Backstage passes to a TAFKAL80ETC concert" {
-		if isItemQualityAboveZero(item) {
-			if item.Name != "Sulfuras, Hand of Ragnaros" {
-				item.decreaseQualityByOne()
-			}
-			if isConjured(item) && isItemQualityAboveZero(item) {
-				item.decreaseQualityByOne()
-			}
+		if item.Name != "Sulfuras, Hand of Ragnaros" {
+			item.decreaseQualityByOne()
+		}
+		if isConjured(item) {
+			item.decreaseQualityByOne()
 		}
 	} else {
-		if isItemQualityBelowFifty(item) {
-			item.increaseQualityByOne()
-			if item.Name == "Backstage passes to a TAFKAL80ETC concert" {
-				if item.SellIn < 11 {
-					if item.Quality < 50 {
-						item.increaseQualityByOne()
 
-					}
-				}
-				if item.SellIn < 6 {
-					if item.Quality < 50 {
-						item.increaseQualityByOne()
-					}
+		item.increaseQualityByOne()
+		if item.Name == "Backstage passes to a TAFKAL80ETC concert" {
+			if item.SellIn < 11 {
+				item.increaseQualityByOne()
+			}
+			if item.SellIn < 6 {
+				{
+					item.increaseQualityByOne()
 				}
 			}
 		}
-	}
 
+	}
 	if item.Name != "Sulfuras, Hand of Ragnaros" {
 		item.decreaseSellInByOne()
 	}
@@ -49,7 +43,7 @@ func (item *Item) UpdateQuality() {
 	if isItemSellInDatePassed(item) {
 		if item.Name != "Aged Brie" {
 			if item.Name != "Backstage passes to a TAFKAL80ETC concert" {
-				if isItemQualityAboveZero(item) {
+				{
 					if item.Name != "Sulfuras, Hand of Ragnaros" {
 						item.decreaseQualityByOne()
 					}
@@ -58,7 +52,7 @@ func (item *Item) UpdateQuality() {
 				item.Quality = 0
 			}
 		} else {
-			if isItemQualityBelowFifty(item) {
+			{
 				item.increaseQualityByOne()
 			}
 		}
@@ -82,7 +76,9 @@ func isItemQualityBelowFifty(item *Item) bool {
 }
 
 func (item *Item) decreaseQualityByOne() {
-	item.Quality--
+	if isItemQualityAboveZero(item) {
+		item.Quality--
+	}
 }
 
 func (item *Item) decreaseSellInByOne() {
@@ -90,5 +86,7 @@ func (item *Item) decreaseSellInByOne() {
 }
 
 func (item *Item) increaseQualityByOne() {
-	item.Quality++
+	if isItemQualityBelowFifty(item) {
+		item.Quality++
+	}
 }
