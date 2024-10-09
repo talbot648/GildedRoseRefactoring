@@ -13,6 +13,7 @@ func main() {
 
 	var items = []*gildedrose.Item{
 		{"+5 Dexterity Vest", 10, 20},
+
 		{"Aged Brie", 2, 0},
 		{"Elixir of the Mongoose", 5, 7},
 		{"Sulfuras, Hand of Ragnaros", 0, 80},
@@ -21,6 +22,7 @@ func main() {
 		{"Backstage passes to a TAFKAL80ETC concert", 10, 49},
 		{"Backstage passes to a TAFKAL80ETC concert", 5, 49},
 		{"Conjured Mana Cake", 3, 6}, // <-- :O
+
 	}
 
 	days := 5
@@ -41,6 +43,6 @@ func main() {
 			fmt.Println(items[i])
 		}
 		fmt.Println("")
-		gildedrose.UpdateQuality(items)
+		gildedrose.UpdateItems(items)
 	}
 }

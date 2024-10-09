@@ -7,15 +7,32 @@ type Item struct {
 	SellIn, Quality int
 }
 
+type UpdateItem interface {
+	UpdateItem()
+}
+
+type AgedBrie struct {
+	*Item
+}
+
+func updateItemType(item *Item) UpdateItem {
+	return &AgedBrie{item}
+}
+
 func UpdateItems(items []*Item) {
 	for _, item := range items {
 
 		switch item.Name {
+
 		case "Aged Brie":
-			item.UpdateAgedBrie()
+			updatedItem := updateItemType(item)
+			updatedItem.UpdateItem()
+
 		case "Backstage passes to a TAFKAL80ETC concert":
 			item.UpdateBackstagePass()
+
 		case "Sulfuras, Hand of Ragnaros":
+
 		default:
 			if isConjured(item) {
 				item.UpdateConjured()
@@ -35,12 +52,12 @@ func (item *Item) UpdateConjured() {
 	item.decreaseSellInByOne()
 }
 
-func (item *Item) UpdateAgedBrie() {
-	item.decreaseSellInByOne()
-	item.increaseQualityByOne()
+func (b *AgedBrie) UpdateItem() {
+	b.decreaseSellInByOne()
+	b.increaseQualityByOne()
 
-	if isItemSellInDatePassed(item) {
-		item.increaseQualityByOne()
+	if isItemSellInDatePassed(b.Item) {
+		b.increaseQualityByOne()
 	}
 }
 
