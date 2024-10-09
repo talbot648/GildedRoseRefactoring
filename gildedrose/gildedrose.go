@@ -9,6 +9,7 @@ type Item struct {
 
 func UpdateItems(items []*Item) {
 	for _, item := range items {
+
 		switch item.Name {
 		case "Aged Brie":
 			item.UpdateAgedBrie()
@@ -16,9 +17,22 @@ func UpdateItems(items []*Item) {
 			item.UpdateBackstagePass()
 		case "Sulfuras, Hand of Ragnaros":
 		default:
-			item.UpdateQuality()
+			if isConjured(item) {
+				item.UpdateConjured()
+			} else {
+				item.UpdateQuality()
+			}
 		}
 	}
+}
+
+func (item *Item) UpdateConjured() {
+	for i := 0; i < 2; i++ {
+		if item.Quality > 0 {
+			item.Quality--
+		}
+	}
+	item.decreaseSellInByOne()
 }
 
 func (item *Item) UpdateAgedBrie() {
@@ -49,10 +63,6 @@ func (item *Item) UpdateBackstagePass() {
 func (item *Item) UpdateQuality() {
 
 	item.decreaseQualityByOne()
-
-	if isConjured(item) {
-		item.decreaseQualityByOne()
-	}
 	item.decreaseSellInByOne()
 	if isItemSellInDatePassed(item) {
 		item.decreaseQualityByOne()
