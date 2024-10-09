@@ -9,12 +9,25 @@ type Item struct {
 
 func UpdateItems(items []*Item) {
 	for _, item := range items {
-		item.UpdateQuality()
+		switch item.Name {
+		case "Aged Brie":
+			item.UpdateAgedBrie()
+		default:
+			item.UpdateQuality()
+		}
 	}
 }
 
+func (item *Item) UpdateAgedBrie() {
+	item.decreaseSellInByOne()
+	item.increaseQualityByOne()
+
+	if isItemSellInDatePassed(item) {
+		item.increaseQualityByOne()
+	}
+}
 func (item *Item) UpdateQuality() {
-	if item.Name != "Aged Brie" && item.Name != "Backstage passes to a TAFKAL80ETC concert" {
+	if item.Name != "Backstage passes to a TAFKAL80ETC concert" {
 		if item.Name != "Sulfuras, Hand of Ragnaros" {
 			item.decreaseQualityByOne()
 		}
@@ -22,7 +35,6 @@ func (item *Item) UpdateQuality() {
 			item.decreaseQualityByOne()
 		}
 	} else {
-
 		item.increaseQualityByOne()
 		if item.Name == "Backstage passes to a TAFKAL80ETC concert" {
 			if item.SellIn < 11 {
@@ -34,12 +46,10 @@ func (item *Item) UpdateQuality() {
 				}
 			}
 		}
-
 	}
 	if item.Name != "Sulfuras, Hand of Ragnaros" {
 		item.decreaseSellInByOne()
 	}
-
 	if isItemSellInDatePassed(item) {
 		if item.Name != "Aged Brie" {
 			if item.Name != "Backstage passes to a TAFKAL80ETC concert" {
