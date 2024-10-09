@@ -12,6 +12,9 @@ func UpdateItems(items []*Item) {
 		switch item.Name {
 		case "Aged Brie":
 			item.UpdateAgedBrie()
+		case "Backstage passes to a TAFKAL80ETC concert":
+			item.UpdateBackstagePass()
+		case "Sulfuras, Hand of Ragnaros":
 		default:
 			item.UpdateQuality()
 		}
@@ -26,46 +29,33 @@ func (item *Item) UpdateAgedBrie() {
 		item.increaseQualityByOne()
 	}
 }
-func (item *Item) UpdateQuality() {
-	if item.Name != "Backstage passes to a TAFKAL80ETC concert" {
-		if item.Name != "Sulfuras, Hand of Ragnaros" {
-			item.decreaseQualityByOne()
-		}
-		if isConjured(item) {
-			item.decreaseQualityByOne()
-		}
-	} else {
+
+func (item *Item) UpdateBackstagePass() {
+	item.decreaseSellInByOne()
+
+	item.increaseQualityByOne()
+	if item.SellIn < 10 {
 		item.increaseQualityByOne()
-		if item.Name == "Backstage passes to a TAFKAL80ETC concert" {
-			if item.SellIn < 11 {
-				item.increaseQualityByOne()
-			}
-			if item.SellIn < 6 {
-				{
-					item.increaseQualityByOne()
-				}
-			}
-		}
 	}
-	if item.Name != "Sulfuras, Hand of Ragnaros" {
-		item.decreaseSellInByOne()
+	if item.SellIn < 5 {
+		item.increaseQualityByOne()
 	}
+
 	if isItemSellInDatePassed(item) {
-		if item.Name != "Aged Brie" {
-			if item.Name != "Backstage passes to a TAFKAL80ETC concert" {
-				{
-					if item.Name != "Sulfuras, Hand of Ragnaros" {
-						item.decreaseQualityByOne()
-					}
-				}
-			} else {
-				item.Quality = 0
-			}
-		} else {
-			{
-				item.increaseQualityByOne()
-			}
-		}
+		item.Quality = 0
+	}
+}
+
+func (item *Item) UpdateQuality() {
+
+	item.decreaseQualityByOne()
+
+	if isConjured(item) {
+		item.decreaseQualityByOne()
+	}
+	item.decreaseSellInByOne()
+	if isItemSellInDatePassed(item) {
+		item.decreaseQualityByOne()
 	}
 }
 
@@ -92,6 +82,7 @@ func (item *Item) decreaseQualityByOne() {
 }
 
 func (item *Item) decreaseSellInByOne() {
+	isItemSellInDatePassed(item)
 	item.SellIn--
 }
 
