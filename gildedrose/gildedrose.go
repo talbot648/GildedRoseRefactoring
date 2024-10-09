@@ -5,13 +5,13 @@ type Item struct {
 	SellIn, Quality int
 }
 
-func UpdateItems(items []*Item) {
+func UpdateQuality(items []*Item) {
 	for _, item := range items {
-		item.UpdateQuality()
+		item.UpdateItem()
 	}
 }
 
-func (item *Item) UpdateQuality() {
+func (item *Item) UpdateItem() {
 	if item.Name != "Aged Brie" && item.Name != "Backstage passes to a TAFKAL80ETC concert" {
 		if isItemQualityAboveZero(item) {
 			if item.Name != "Sulfuras, Hand of Ragnaros" {
