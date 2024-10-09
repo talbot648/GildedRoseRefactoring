@@ -19,7 +19,7 @@ func (item *Item) UpdateQuality() {
 			if item.Name != "Sulfuras, Hand of Ragnaros" {
 				item.decreaseQualityByOne()
 			}
-			if isConjured(item) {
+			if isConjured(item) && isItemQualityAboveZero(item) {
 				item.decreaseQualityByOne()
 			}
 		}

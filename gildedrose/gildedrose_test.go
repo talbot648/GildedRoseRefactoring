@@ -175,6 +175,18 @@ func TestConjuredItemDegradesTwiceAsFast(t *testing.T) {
 	}
 }
 
+func TestConjuredItemDoesNotDegradeItemBelowZero(t *testing.T) {
+	item := givenTestItem("Conjured Test", 4, 1)
+
+	gildedrose.UpdateItems(item)
+	got := item[0].Quality
+	want := 0
+
+	if got != want {
+		t.Errorf("Error when updating conjured item quality below zero, got %v, expected %v", got, want)
+	}
+}
+
 func givenTestItem(name string, SellIn int, Quality int) []*gildedrose.Item {
 	var items = []*gildedrose.Item{
 		{name, SellIn, Quality},
