@@ -9,7 +9,7 @@ import (
 func TestQualityDecreasesByOneAfterEachDay(t *testing.T) {
 	item := givenTestItem("test", 7, 5)
 
-	gildedrose.UpdateQuality(item)
+	gildedrose.UpdateItems(item)
 	got := item[0].Quality
 	want := 4
 
@@ -21,7 +21,7 @@ func TestQualityDecreasesByOneAfterEachDay(t *testing.T) {
 func TestQualityDegradeSpeedDoublesAfterPassedSellIn(t *testing.T) {
 	item := givenTestItem("test", 0, 10)
 
-	gildedrose.UpdateQuality(item)
+	gildedrose.UpdateItems(item)
 	got := item[0].Quality
 	want := 8
 
@@ -33,7 +33,7 @@ func TestQualityDegradeSpeedDoublesAfterPassedSellIn(t *testing.T) {
 func TestQualityCannotGoBelowZero(t *testing.T) {
 	item := givenTestItem("test", 2, 0)
 
-	gildedrose.UpdateQuality(item)
+	gildedrose.UpdateItems(item)
 	got := item[0].Quality
 	want := 0
 
@@ -45,7 +45,7 @@ func TestQualityCannotGoBelowZero(t *testing.T) {
 func TestAgedBrieQualityIncreasesAfterUpdate(t *testing.T) {
 	item := givenTestItem("Aged Brie", 2, 5)
 
-	gildedrose.UpdateQuality(item)
+	gildedrose.UpdateItems(item)
 	got := item[0].Quality
 	want := 6
 
@@ -57,7 +57,7 @@ func TestAgedBrieQualityIncreasesAfterUpdate(t *testing.T) {
 func TestQualityCannotGoAboveFifty(t *testing.T) {
 	item := givenTestItem("Aged Brie", 2, 50)
 
-	gildedrose.UpdateQuality(item)
+	gildedrose.UpdateItems(item)
 	got := item[0].Quality
 	want := 50
 
@@ -69,7 +69,7 @@ func TestQualityCannotGoAboveFifty(t *testing.T) {
 func TestSellInDecreasesByOneAfterEachDay(t *testing.T) {
 	item := givenTestItem("test", 5, 7)
 
-	gildedrose.UpdateQuality(item)
+	gildedrose.UpdateItems(item)
 	got := item[0].SellIn
 	want := 4
 
@@ -81,7 +81,7 @@ func TestSellInDecreasesByOneAfterEachDay(t *testing.T) {
 func TestSulfurasDoesNotReduceInQuality(t *testing.T) {
 	item := givenTestItem("Sulfuras, Hand of Ragnaros", 3, 80)
 
-	gildedrose.UpdateQuality(item)
+	gildedrose.UpdateItems(item)
 	got := item[0].Quality
 	want := 80
 
@@ -93,7 +93,7 @@ func TestSulfurasDoesNotReduceInQuality(t *testing.T) {
 func TestSulfurasSellInDoesNotAffectQuality(t *testing.T) {
 	item := givenTestItem("Sulfuras, Hand of Ragnaros", -2, 80)
 
-	gildedrose.UpdateQuality(item)
+	gildedrose.UpdateItems(item)
 	got := item[0].Quality
 	want := 80
 
@@ -105,7 +105,7 @@ func TestSulfurasSellInDoesNotAffectQuality(t *testing.T) {
 func TestBackstagePassQualityIncreaseByOneWhenSellInOverTenDays(t *testing.T) {
 	item := givenTestItem("Backstage passes to a TAFKAL80ETC concert", 13, 5)
 
-	gildedrose.UpdateQuality(item)
+	gildedrose.UpdateItems(item)
 	got := item[0].Quality
 	want := 6
 
@@ -117,7 +117,7 @@ func TestBackstagePassQualityIncreaseByOneWhenSellInOverTenDays(t *testing.T) {
 func TestBackstagePassQualityIncreaseByTwoWhenSellInBetweenFiveAndTenDays(t *testing.T) {
 	item := givenTestItem("Backstage passes to a TAFKAL80ETC concert", 7, 5)
 
-	gildedrose.UpdateQuality(item)
+	gildedrose.UpdateItems(item)
 	got := item[0].Quality
 	want := 7
 
@@ -129,7 +129,7 @@ func TestBackstagePassQualityIncreaseByTwoWhenSellInBetweenFiveAndTenDays(t *tes
 func TestBackstagePassQualityIncreaseByThreeWhenSellInLessThanFiveDays(t *testing.T) {
 	item := givenTestItem("Backstage passes to a TAFKAL80ETC concert", 3, 5)
 
-	gildedrose.UpdateQuality(item)
+	gildedrose.UpdateItems(item)
 	got := item[0].Quality
 	want := 8
 
@@ -141,7 +141,7 @@ func TestBackstagePassQualityIncreaseByThreeWhenSellInLessThanFiveDays(t *testin
 func TestBackstagePassQualityZeroAfterConcert(t *testing.T) {
 	item := givenTestItem("Backstage passes to a TAFKAL80ETC concert", 0, 5)
 
-	gildedrose.UpdateQuality(item)
+	gildedrose.UpdateItems(item)
 	got := item[0].Quality
 	want := 0
 
@@ -153,7 +153,7 @@ func TestBackstagePassQualityZeroAfterConcert(t *testing.T) {
 func TestAgedBrieQualityIncreasesDoubleSpeedWhenSellInBelowZero(t *testing.T) {
 	item := givenTestItem("Aged Brie", 0, 5)
 
-	gildedrose.UpdateQuality(item)
+	gildedrose.UpdateItems(item)
 	got := item[0].Quality
 	want := 7
 
@@ -161,6 +161,18 @@ func TestAgedBrieQualityIncreasesDoubleSpeedWhenSellInBelowZero(t *testing.T) {
 		t.Errorf("Error when updating quaity of aged brie with below zero sellin, got %v, expected %v", got, want)
 	}
 
+}
+
+func TestConjuredItemDegradesTwiceAsFast(t *testing.T) {
+	item := givenTestItem("Conjured Test", 4, 5)
+
+	gildedrose.UpdateItems(item)
+	got := item[0].Quality
+	want := 3
+
+	if got != want {
+		t.Errorf("Error when updating quaity of aged brie with below zero sellin, got %v, expected %v", got, want)
+	}
 }
 
 func givenTestItem(name string, SellIn int, Quality int) []*gildedrose.Item {
