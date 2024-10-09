@@ -8,51 +8,71 @@ type Item struct {
 }
 
 type UpdateItem interface {
-	UpdateItem()
+	updateItem()
 }
 
 type AgedBrie struct {
 	*Item
 }
 
-func updateItemType(item *Item) UpdateItem {
-	return &AgedBrie{item}
+type BackstagePass struct {
+	*Item
+}
+
+type Conjured struct {
+	*Item
+}
+
+type RegularItem struct {
+	*Item
+}
+
+type Sulfuras struct {
+	*Item
+}
+
+func convertItemType(item *Item) UpdateItem {
+
+	switch item.Name {
+
+	case "Aged Brie":
+		return &AgedBrie{item}
+
+	case "Backstage passes to a TAFKAL80ETC concert":
+		return &BackstagePass{item}
+
+	case "Sulfuras, Hand of Ragnaros":
+		return &Sulfuras{item}
+	default:
+		if isConjured(item) {
+			return &Conjured{item}
+		}
+	}
+	return &RegularItem{item}
+
 }
 
 func UpdateItems(items []*Item) {
 	for _, item := range items {
-
-		switch item.Name {
-
-		case "Aged Brie":
-			updatedItem := updateItemType(item)
-			updatedItem.UpdateItem()
-
-		case "Backstage passes to a TAFKAL80ETC concert":
-			item.UpdateBackstagePass()
-
-		case "Sulfuras, Hand of Ragnaros":
-
-		default:
-			if isConjured(item) {
-				item.UpdateConjured()
-			} else {
-				item.UpdateQuality()
-			}
-		}
+		updatedItem := convertItemType(item)
+		updatedItem.updateItem()
 	}
 }
 
-func (item *Item) UpdateConjured() {
+func (s *Sulfuras) updateItem() {
+
+}
+
+func (c *Conjured) updateItem() {
 	for i := 0; i < 2; i++ {
-		if item.Quality > 0 {
-			item.Quality--
+		if c.Quality > 0 {
+			c.Quality--
 		}
 	}
-	item.decreaseSellInByOne()
+	c.decreaseSellInByOne()
 }
 
-func (b *AgedBrie) UpdateItem() {
+func (b *AgedBrie) updateItem() {
 	b.decreaseSellInByOne()
 	b.increaseQualityByOne()
 
@@ -61,28 +81,28 @@ func (b *AgedBrie) UpdateItem() {
 	}
 }
 
-func (item *Item) UpdateBackstagePass() {
-	item.decreaseSellInByOne()
+func (bp *BackstagePass) updateItem() {
+	bp.decreaseSellInByOne()
 
-	item.increaseQualityByOne()
-	if item.SellIn < 10 {
-		item.increaseQualityByOne()
+	bp.increaseQualityByOne()
+	if bp.SellIn < 10 {
+		bp.increaseQualityByOne()
 	}
-	if item.SellIn < 5 {
-		item.increaseQualityByOne()
+	if bp.SellIn < 5 {
+		bp.increaseQualityByOne()
 	}
 
-	if isItemSellInDatePassed(item) {
-		item.Quality = 0
+	if isItemSellInDatePassed(bp.Item) {
+		bp.Quality = 0
 	}
 }
 
-func (item *Item) UpdateQuality() {
+func (r *RegularItem) updateItem() {
 
-	item.decreaseQualityByOne()
-	item.decreaseSellInByOne()
-	if isItemSellInDatePassed(item) {
-		item.decreaseQualityByOne()
+	r.decreaseQualityByOne()
+	r.decreaseSellInByOne()
+	if isItemSellInDatePassed(r.Item) {
+		r.decreaseQualityByOne()
 	}
 }
 
