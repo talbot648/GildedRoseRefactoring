@@ -150,6 +150,19 @@ func TestBackstagePassQualityZeroAfterConcert(t *testing.T) {
 	}
 }
 
+func TestAgedBrieQualityIncreasesDoubleSpeedWhenSellInBelowZero(t *testing.T) {
+	item := givenTestItem("Aged Brie", 0, 5)
+
+	gildedrose.UpdateItems(item)
+	got := item[0].Quality
+	want := 7
+
+	if got != want {
+		t.Errorf("Error when updating quaity of aged brie with below zero sellin, got %v, expected %v", got, want)
+	}
+
+}
+
 func givenTestItem(name string, SellIn int, Quality int) []*gildedrose.Item {
 	var items = []*gildedrose.Item{
 		{name, SellIn, Quality},
