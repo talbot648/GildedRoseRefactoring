@@ -2,33 +2,8 @@ package gildedrose
 
 import "strings"
 
-type Item struct {
-	Name            string
-	SellIn, Quality int
-}
-
 type Update interface {
 	update()
-}
-
-type AgedBrie struct {
-	*Item
-}
-
-type BackstagePass struct {
-	*Item
-}
-
-type Conjured struct {
-	*Item
-}
-
-type RegularItem struct {
-	*Item
-}
-
-type Sulfuras struct {
-	*Item
 }
 
 func convertItemType(item *Item) Update {
@@ -64,11 +39,8 @@ func (s *Sulfuras) update() {
 }
 
 func (c *Conjured) update() {
-	for i := 0; i < 2; i++ {
-		if c.Quality > 0 {
-			c.decreaseQualityByOne()
-		}
-	}
+	c.decreaseQualityByOne()
+	c.decreaseQualityByOne()
 	c.decreaseSellInByOne()
 }
 
