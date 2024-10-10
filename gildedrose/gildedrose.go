@@ -7,8 +7,8 @@ type Item struct {
 	SellIn, Quality int
 }
 
-type UpdateItem interface {
-	updateItem()
+type Update interface {
+	update()
 }
 
 type AgedBrie struct {
@@ -31,7 +31,7 @@ type Sulfuras struct {
 	*Item
 }
 
-func convertItemType(item *Item) UpdateItem {
+func convertItemType(item *Item) Update {
 
 	switch item.Name {
 
@@ -55,24 +55,24 @@ func convertItemType(item *Item) UpdateItem {
 func UpdateItems(items []*Item) {
 	for _, item := range items {
 		updatedItem := convertItemType(item)
-		updatedItem.updateItem()
+		updatedItem.update()
 	}
 }
 
-func (s *Sulfuras) updateItem() {
-
+func (s *Sulfuras) update() {
+	//nothing needed to update a legendary item
 }
 
-func (c *Conjured) updateItem() {
+func (c *Conjured) update() {
 	for i := 0; i < 2; i++ {
 		if c.Quality > 0 {
-			c.Quality--
+			c.decreaseQualityByOne()
 		}
 	}
 	c.decreaseSellInByOne()
 }
 
-func (b *AgedBrie) updateItem() {
+func (b *AgedBrie) update() {
 	b.decreaseSellInByOne()
 	b.increaseQualityByOne()
 
@@ -81,7 +81,7 @@ func (b *AgedBrie) updateItem() {
 	}
 }
 
-func (bp *BackstagePass) updateItem() {
+func (bp *BackstagePass) update() {
 	bp.decreaseSellInByOne()
 
 	bp.increaseQualityByOne()
@@ -97,7 +97,7 @@ func (bp *BackstagePass) updateItem() {
 	}
 }
 
-func (r *RegularItem) updateItem() {
+func (r *RegularItem) update() {
 
 	r.decreaseQualityByOne()
 	r.decreaseSellInByOne()
